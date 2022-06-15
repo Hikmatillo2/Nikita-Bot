@@ -7,7 +7,7 @@ from tyan import Chans
 
 class Data:
     def __init__(self):
-        self.TOKEN = '5450501841:AAExEOGGtn_T8OScRlKtruoSYcqViNBtwp8'
+        self.TOKEN = ''
         self.APP_URL = f'https://yandexbot.herokuapp.com/{self.TOKEN}'
         self.bot = telebot.TeleBot(self.TOKEN)
 
