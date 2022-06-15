@@ -2,7 +2,6 @@
 import time
 import telebot
 import httplib2
-from tyan import Chans
 
 
 class Data:
@@ -28,7 +27,6 @@ ADMIN_ID = 476893348, 1001606699
 bot = Data().bot
 co = 0
 flag = True
-GIRLS_MODE = False
 
 di = {'"Монумент": Ватутина – Блюхера -Титова - Станиславского - Котовского': 'data/4.jpg',
       '"Покрышкина"–Сиб гвардейцев-Вертковская-Станиславского-Титова-Покрышкина.': 'data/5.jpg',
@@ -121,36 +119,11 @@ def start_message(message):
         flag = False'''
 
 
-@bot.message_handler(commands=['chans'])
-def announce(message):
-    global ADMIN_ID, GIRLS_MODE
-    id_ = message.chat.id
-    if id_ in ADMIN_ID:
-        bot.send_message(id_, 'Привет, какую тянку скинуть?', reply_markup=Keyboard(True, ['Zero Two',
-                                                                                           'Albedo', 'Esdeath']))
-        GIRLS_MODE = True
-    else:
-        bot.send_message(id_, 'К сожалению у вас нет прав Администратора для доступа к данному разделу')
-
-
 @bot.message_handler(content_types=['text'])
 def send_text(message):
     global GIRLS_MODE
     if flag:
         if message.text in di.keys():
-            bot.send_photo(message.chat.id, photo=open(di[message.text], 'rb'), caption=message.text)
-        elif GIRLS_MODE:
-            link = ''
-            if message.text == 'Albedo':
-                link = Chans.get_albedo()
-            elif message.text == 'Zero Two':
-                link = Chans.get_zerotwo()
-            elif message.text == 'Esdeath':
-                link = Chans.get_esdeath()
-            cache = httplib2.Http(disable_ssl_certificate_validation=True)
-            response, content = cache.request(link)
-            bot.send_photo(message.chat.id, photo=content, reply_markup=telebot.types.ReplyKeyboardRemove())
-            GIRLS_MODE = False
             bot.send_message(message.chat.id, 'Районы города:', reply_markup=Keyboard(True, [i for i in di.keys()]))
         else:
             bot.send_message(message.chat.id, 'Районы города:', reply_markup=Keyboard(True, [i for i in di.keys()]))
